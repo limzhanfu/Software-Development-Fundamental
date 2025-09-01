@@ -1,7 +1,7 @@
 from abc import ABC ,abstractmethod
 from calendar_unit import Year ,Month
 
-class CalendarFactory(ABC):
+class ICalendarFactory(ABC):
     
     @abstractmethod
     def create_year(self ,year: int) -> Year:
