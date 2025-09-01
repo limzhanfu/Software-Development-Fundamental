@@ -1,8 +1,8 @@
 from calendar_unit import Month ,Year
 from ..calendar_enum.islamic_calendar_enum import EIslamicCalendar as I
-from .calendar_factory_abstract import CalendarFactory
+from .calendar_factory_interface import ICalendarFactory
 
-class IslamicCalendar(CalendarFactory):
+class IslamicFactory(ICalendarFactory):
     def create_year(self ,year: int) -> Year:
         is_leap_year = (year % 30 in (2 ,5 ,7 ,10 ,13 ,16 ,18 ,21 ,24 ,26 ,29))
 

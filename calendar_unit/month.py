@@ -1,6 +1,6 @@
 class Month :
     def __init__(self ,days: int ,name: str):
-        self._days : list[int] = days
+        self._days : int = days
         self._name : str = name
 
     def get_days(self):

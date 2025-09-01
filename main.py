@@ -1,16 +1,12 @@
-from calendar_unit import gregorian_factory ,islamic_factory
+from calendar_unit import GregorianFactory ,IslamicFactory
 from _calendar import Calendar 
 
-def main():
-    factory1 = gregorian_factory.GregorianFactory()
-    factory2 = islamic_factory.IslamicCalendar() 
-    islamic_calendar = Calendar("Islamic Calendar" ,factory2.create_year(1445))
-    gregorian_calendar = Calendar("Gregorian Calendar" ,factory1.create_year(1984))
 
-    islamic_calendar.display()
-    print()
-    gregorian_calendar.display()
+islamic_calendar = Calendar("Islamic Calendar" ,1984 ,IslamicFactory())
+gregorian_calendar = Calendar("Gregorian Calendar" ,2025 ,GregorianFactory())
 
-if __name__ == "__main__":
-    main()
+islamic_calendar.display()
+print()
+gregorian_calendar.display()
+
 
