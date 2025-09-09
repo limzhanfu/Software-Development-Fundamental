@@ -1,16 +1,17 @@
-from calendar_unit import Year ,ICalendarFactory
+from calendar_unit import ICalendarFactory
 
 class Calendar:
     def __init__(self ,name: str ,year ,factory: ICalendarFactory):
         self._name: str = name
-        self._year: Year
         self._calendar_factory: ICalendarFactory = factory
-
         self._year = self._calendar_factory.create_year(year)
     
     def display(self):
-        print(self._name ,self._year.year)
+        print(self._name ,self._year._year)
         self._year.display()
+    
+    def to_string(self) -> list[list[str]]:
+        return self._year.to_string()
 
     def get_name(self):
         return self._name
@@ -23,6 +24,7 @@ class Calendar:
     
     def set_factory(self ,factory):
         self._calendar_factory = factory
+
 
     name = property(get_name ,set_name)
     factory = property(get_factory ,set_factory)
