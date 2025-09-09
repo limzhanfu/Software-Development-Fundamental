@@ -15,7 +15,7 @@ class IslamicFactory(ICalendarFactory):
             if(i.value % 2 == 0):
                 days = 30
             elif(i.value == 11):
-                days = 29 if(is_leap_year) else 30
+                days = 30 if(is_leap_year) else 29
             else:
                 days = 29
             
