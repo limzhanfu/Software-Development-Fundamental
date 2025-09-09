@@ -7,41 +7,20 @@ from timetable_unit import Schedule ,Event
 class Timetable:
     def __init__(self):
         self._schedules: list[Schedule] = []
-        self._added_timetable: list[Schedule] = []
-        self._cycle: int = 7
-        self._loop: int = 1
         self._overlap_indexes: set = set()
          
-    def add_schedule(self ,value: int , start: str ,end: str ,event: Event):
-        schedule = Schedule(value ,start ,end ,event)
+    def add_schedule(self ,schedule: Schedule):
         self._schedules.append(schedule)
-        self._schedules.sort(key=lambda x: (x.start ,x.week_id))
+        Schedule.sort(self._schedules)
 
-    def set_cycle(self ,cycle: int):
-        if(cycle != 0):
-            self._cycle = cycle
-        else:
-            print("Cycle cannot be zero")
-
-    def set_loop(self ,loop: int):
-        self._loop = loop
-    
     def get_schedules(self) -> list[Schedule]:
         array = []
-        for i in range(self._loop):
-            for j in self._schedules:
-                array.append(
-                    Schedule(
-                    j._week_id + i * self._cycle,
-                    j.start,
-                    j.end,
-                    j.event
-                            ))
+        for i in self._schedules:
+            for j in i.get_loop_schedules():
+                array.append(j)
+        
+        Schedule.sort(array)
         return array
-    
-    def get_cycle_at(self ,schedule: Schedule) -> int:
-         value = (schedule.week_id - 1) // self._cycle
-         return value + 1
     
     def get_time_crashed_at(self) -> set[int]:
         crashed: set[int] = set()
@@ -70,20 +49,18 @@ EventCollector.add_event(Event("Physhic"))
 EventCollector.add_event(Event("Biology"))
 
 timetable1 = Timetable()
-timetable1.set_loop(4)
-timetable1.add_schedule(1 ,11.20 , 12.00 , EventCollector.get_event()[0])
-timetable1.add_schedule(1 ,11.10 , 12.00 ,EventCollector.get_event()[1])
+timetable1.add_schedule(Schedule(day_start=5 ,day_end=5 ,time_start=11.10 ,time_end=12.00 ,event=EventCollector.get_event()[1] ,loop=2))
+timetable1.add_schedule(Schedule(day_start=2 ,day_end=2 ,time_start=11.10 ,time_end=12.00 ,event=EventCollector.get_event()[0]))
 
 # timetable1.add_schedule(1 ,10.00 , 11.10 , EventCollector.get_event()[0])
 # timetable1.add_schedule(49 ,11.20 , 12.00 , EventCollector.get_event()[2])
 # timetable1.add_schedule(49 ,11.20 , 12.00 ,EventCollector.get_event()[0])
 # timetable1.add_schedule(47 ,11.20 , 12.00 ,EventCollector.get_event()[1])
 
-print(timetable1.get_time_crashed_at())
-for j ,i in enumerate(timetable1.schedules):
-    print("week " + str(timetable1.get_cycle_at(i)) ,str(i.start) + " to " + str(i.end) ,i.event.name ,end="") 
-    # if(j in timetable1.get_time_crashed_at()):
-    #     print(" crash" ,end="")
-    print()
+# for i in timetable1._schedules:
+#     print(str(i.day_start)+ " to " +str(i.day_end) ,str(i.time_start) + " to " + str(i.time_end) ,i.event.name) 
+
+for i in timetable1.get_schedules():
+    print(str(i.day_start)+ " to " +str(i.day_end) ,str(i.time_start) + " to " + str(i.time_end) ,i.event.name) 
         
     
