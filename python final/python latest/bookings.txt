@@ -1,0 +1,7 @@
+# username|venue|room|datetime|details
+2401234|Library - Room A (2-4 person)|2025-09-14 08:00-09:00|
+2401234|Library - Room A (2-4 person)|2025-09-13 21:00-22:00|
+2401234|Library - Room A (2-4 person)|2025-09-13 08:00-11:00|
+2401234|Library - Room A (2-4 person)|2025-09-13 20:00-21:00|
+2401234|Library - Room B (5-8 person)|2025-09-13 16:00-17:00|
+2401234|Library - Room A (2-4 person)|2025-09-13 12:00-13:00|

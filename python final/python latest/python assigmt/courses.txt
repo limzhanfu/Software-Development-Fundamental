@@ -1,0 +1,10 @@
+#username|course_id|course_name|lecturer|schedule
+2401234|AMCS1034|Software Development Fundamentals|Wong Wai Zhong|Mon 10:00–12:00, DK X
+2401234|AMCS2093|Operating System|Chua Chi Log|Wed 14:00–16:00, K103
+2401234|AMIT2033|Networking Essentials|Chaw Thim Vai|Tue 09:00–11:00, DK ABA
+2401234|AMIT2014|Web And Mobile Systems|Laiw Chun Voon|Thu 13:00–15:00, Dk ABA
+
+2401231|ABDM2073|Organisational Behaviour|Suganthi A/P Magason|Mon 8:00-10:00, DK ABA
+2401231|ABDH2173|Introduction To Human Resource Management|Tin Shin thed|Tue 12:00-14:00, DK D
+2401231|AMIS2723|Introduction To Business Analytics|Ong Mor yang|Wed 9:00-11:00, DK C
+2401231|ABIS2703|Mis In The Digital Age|Loh Chuang Li|Thu 10:00-12:00, Dk D

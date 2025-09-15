@@ -1,0 +1,9 @@
+
+2401234|AMCS1034|Software Development Fundamentals|A|3.0|4.00
+2401234|AMCS2093|Operating System|A|3.0|4.00
+2401234|AMIT2033|Networking Essentials|A|3.0|4.00
+2401234|AMIT2014|Web And Mobile Systems|A|3.0|4.00
+2401234|AMCS1034|Software Development Fundamentals|A|3.0|4.00
+2401234|AMCS2093|Operating System|A|3.0|4.00
+2401234|AMIT2033|Networking Essentials|A|3.0|4.00
+2401234|AMIT2014|Web And Mobile Systems|A|3.0|4.00
