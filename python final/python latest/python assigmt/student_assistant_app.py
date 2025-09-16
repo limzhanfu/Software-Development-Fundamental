@@ -7,6 +7,7 @@ from booking import BookingView
 from gpa import CgpaView
 from report import ReportView
 from calendarapp.app import CalendarApp 
+from notes import NotesView
 
 # --- Files ---
 USERS_FILE = "users.txt"
@@ -234,6 +235,9 @@ class AppFrame(ttk.Frame):
         calendar_tab = CalendarTab(body)
         body.add(calendar_tab, text="Calendar")
 
+        notes_tab = NotesView(body, self.username)
+        body.add(notes_tab, text="Notes Organizer")
+
 
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
@@ -243,7 +247,7 @@ class StudentAssistantApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Student Assistant App")
-        self.geometry("760x520")
+        self.geometry("900x760")
         self.minsize(720, 480)
 
         ensure_demo_files()
