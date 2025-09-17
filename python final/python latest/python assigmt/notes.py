@@ -28,8 +28,10 @@ class NotesView(ttk.Frame):
         self.search_var = tk.StringVar()
         self.sort_var = tk.StringVar(value="Date (newest)")
 
-        # Keep references for thumbnails to avoid garbage collection
+        # Keep image references for thumbnails to avoid GC
         self._thumb_refs = []
+        # Mapping from Treeview item id (iid) to note dict for precise lookup
+        self._iid_map = {}
 
         # Build GUI and load notes
         self.build()
@@ -212,10 +214,17 @@ class NotesView(ttk.Frame):
         except Exception:
             pass
 
-        # Populate treeview
+        # Populate treeview and build iid -> note mapping for reliable lookup
         self.tree.delete(*self.tree.get_children())
+
+        # Reset mapping
+        self._iid_map.clear()
+
         for n in filtered:
-            self.tree.insert("", "end", values=(n["category"], n["title"], n["tags"], n["display_timestamp"]))
+            # Insert row and capture the item id (iid)
+            iid = self.tree.insert("", "end", values=(n["category"], n["title"], n["tags"], n["display_timestamp"]))
+            # Map iid to the note object (reference to dict stored in memory)
+            self._iid_map[iid] = n
 
     # ---------------- Toggle heading sorting ----------------
     def _heading_sort_toggle(self, col):
@@ -233,15 +242,19 @@ class NotesView(ttk.Frame):
         sel = self.tree.selection()
         if not sel:
             return
-        item = self.tree.item(sel[0])
-        title = item["values"][1]
-        display_ts = item["values"][3]  # this is the truncated timestamp shown in the UI (YYYY-MM-DD HH:MM)
+        iid = sel[0]
 
-        # Prefer exact match using title + display_timestamp to find the original note (which contains full timestamp)
-        note = next((n for n in self.notes if n["title"] == title and n.get("display_timestamp") == display_ts), None)
+        # Prefer direct mapping lookup by iid
+        note = self._iid_map.get(iid)
         if not note:
-            # Fallback: try matching by title only (keeps previous behavior for older entries)
-            note = next((n for n in self.notes if n["title"] == title), None)
+            # Fallback: try retrieving values from item and match by title+display_timestamp
+            item = self.tree.item(iid)
+            title = item["values"][1]
+            display_ts = item["values"][3]  # truncated displayed timestamp
+            note = next((n for n in self.notes if n["title"] == title and n.get("display_timestamp") == display_ts), None)
+            if not note:
+                # Final fallback: match by title only (legacy)
+                note = next((n for n in self.notes if n["title"] == title), None)
         if not note:
             return
 
@@ -569,19 +582,28 @@ class NotesView(ttk.Frame):
         if not sel:
             messagebox.showwarning("Delete", "Please select a note to delete.")
             return
-        item = self.tree.item(sel[0])
-        title = item["values"][1]
-        display_ts = item["values"][3]   # this is the displayed timestamp (YYYY-MM-DD HH:MM)
+        iid = sel[0]
 
-        # Find the actual note object to get full timestamp (with seconds)
-        note_to_delete = next((n for n in self.notes if n["title"] == title and n.get("display_timestamp") == display_ts), None)
+        # Try to get note directly from mapping
+        note_to_delete = self._iid_map.get(iid)
 
-        # If not found by display timestamp, fallback to matching by title only (legacy behavior)
         full_ts = None
+        title = None
         if note_to_delete:
             full_ts = note_to_delete.get("timestamp")
+            title = note_to_delete.get("title")
         else:
-            # fallback: user might have older notes without display_timestamp; warn that this will delete all same-title notes
+            # Fallback: extract values from tree item and try to match in memory
+            item = self.tree.item(iid)
+            title = item["values"][1]
+            display_ts = item["values"][3]   # displayed timestamp (YYYY-MM-DD HH:MM)
+            # Try to find corresponding note in memory by title + display timestamp
+            note_to_delete = next((n for n in self.notes if n["title"] == title and n.get("display_timestamp") == display_ts), None)
+            if note_to_delete:
+                full_ts = note_to_delete.get("timestamp")
+
+        # If still not found, ask user whether to delete all notes with that title (legacy fallback)
+        if not note_to_delete:
             confirm = messagebox.askyesno("Confirm", "Exact match not found by displayed timestamp. Delete all notes with this title for your account?", parent=self)
             if not confirm:
                 return
@@ -609,7 +631,6 @@ class NotesView(ttk.Frame):
 
         messagebox.showinfo("Deleted", "Note deleted.")
         self.load_notes()
-
 
     # ---------------- Category management (Add / Delete) ----------------
     def add_category(self):
