@@ -13,7 +13,7 @@ def expand_occurrences(event: "Event"):
         return [base_date]
 
     days = []
-    if event.loop == -1:  # 无限循环 → 展开未来1年
+    if event.loop == -1:  
         max_date = base_date + datetime.timedelta(days=365)
         d = base_date
         while d <= max_date:
