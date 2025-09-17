@@ -4,5 +4,5 @@
 - matplotlib (pip install matplotlib)
 
 # Student Account
-- StudentID :2401234 Password :123456
-- StudentID :2401231 Password :abc123
+- Username :2401234 Password :123456
+- Username :2401231 Password :abc123
