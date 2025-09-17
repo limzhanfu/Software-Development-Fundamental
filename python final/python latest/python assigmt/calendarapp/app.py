@@ -174,7 +174,6 @@ class CalendarApp:
         if date_obj is None:
             date_obj = self.selected_date
 
-        # 确保 date_obj 是 date 类型
         if isinstance(date_obj, str):
             try:
                 date_obj = datetime.date.fromisoformat(date_obj)

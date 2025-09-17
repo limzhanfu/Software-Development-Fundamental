@@ -87,7 +87,7 @@ class EventDialog:
                 messagebox.showwarning("Invalid", "End time cannot be before start time.")
                 return
 
-            if event:  # 编辑已有事件 → 更新属性
+            if event:  
                 event.title = title
                 event.date = self.start_picker.get_date_str()
                 event.start = self.start_picker.get_time_str()
@@ -96,7 +96,7 @@ class EventDialog:
                 event.notes = notes_txt.get("1.0", "end").strip()
                 event.cycle = int(cycle_var.get().strip() or 0)
                 event.loop = int(loop_var.get().strip() or 1)
-            else:  # 新建事件
+            else:  
                 evd = Event(
                     title,
                     self.start_picker.get_date_str(),
@@ -121,7 +121,7 @@ class EventDialog:
         if event:
             def delete_and_close():
                 if event and event in self.app.events:
-                    self.app.events.remove(event)   # 直接删除对象
+                    self.app.events.remove(event)  
                     self.app.save_events()
                 dlg.destroy()
                 self.app.refresh_sidebar()
@@ -136,7 +136,6 @@ class DateTimePicker(ttk.Frame):
     def __init__(self, master, date=None, time=None, **kwargs):
         super().__init__(master, **kwargs)
 
-        # 默认值
         if not date:
             date = datetime.date.today()
         if not time:
@@ -161,7 +160,6 @@ class DateTimePicker(ttk.Frame):
         self.year_var.trace_add("write", lambda *a: self.update_days())
 
 
-        # 小时选择
         hour, minute = map(int, time.split(":"))
         self.hour_var = tk.StringVar(value=f"{hour:02d}")
         hours = [f"{h:02d}" for h in range(24)]
